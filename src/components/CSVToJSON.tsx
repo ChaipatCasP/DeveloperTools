@@ -365,7 +365,7 @@ export default function CSVToJSON() {
                         <Label>จัดกลุ่มตาม</Label>
                         <Select
                           value={config.groupBy}
-                          onValueChange={(value) => updateGroupConfig(config.id, { groupBy: value, name: value })}
+                          onValueChange={(value: string) => updateGroupConfig(config.id, { groupBy: value, name: value })}
                         >
                           <SelectTrigger>
                             <SelectValue />
