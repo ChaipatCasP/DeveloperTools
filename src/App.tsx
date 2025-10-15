@@ -4,7 +4,8 @@ import { CompareCode } from './components/CompareCode';
 import { FormatSQL } from './components/FormatSQL';
 import { FormatJSON } from './components/FormatJSON';
 import { CaseConverter } from './components/CaseConverter';
-import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight } from 'lucide-react';
+import CSVToJSON from './components/CSVToJSON';
+import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson } from 'lucide-react';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -20,26 +21,31 @@ export default function App() {
         </div>
 
         <Tabs defaultValue="compare" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto">
-            <TabsTrigger value="compare" className="gap-2">
+          <TabsList className="flex w-full h-auto overflow-x-auto">
+            <TabsTrigger value="compare" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <ArrowLeftRight className="w-4 h-4" />
-              <span className="hidden sm:inline">Compare Code</span>
-              <span className="sm:hidden">Compare</span>
+              <span className="hidden md:inline">Compare Code</span>
+              <span className="md:hidden">Compare</span>
             </TabsTrigger>
-            <TabsTrigger value="sql" className="gap-2">
+            <TabsTrigger value="sql" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <Database className="w-4 h-4" />
-              <span className="hidden sm:inline">Format SQL</span>
-              <span className="sm:hidden">SQL</span>
+              <span className="hidden md:inline">Format SQL</span>
+              <span className="md:hidden">SQL</span>
             </TabsTrigger>
-            <TabsTrigger value="json" className="gap-2">
+            <TabsTrigger value="json" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <Braces className="w-4 h-4" />
-              <span className="hidden sm:inline">Format JSON</span>
-              <span className="sm:hidden">JSON</span>
+              <span className="hidden md:inline">Format JSON</span>
+              <span className="md:hidden">JSON</span>
             </TabsTrigger>
-            <TabsTrigger value="case" className="gap-2">
+            <TabsTrigger value="csv" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <FileJson className="w-4 h-4" />
+              <span className="hidden md:inline">CSV to JSON</span>
+              <span className="md:hidden">CSV</span>
+            </TabsTrigger>
+            <TabsTrigger value="case" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <CaseSensitive className="w-4 h-4" />
-              <span className="hidden sm:inline">Case Converter</span>
-              <span className="sm:hidden">Case</span>
+              <span className="hidden md:inline">Case Converter</span>
+              <span className="md:hidden">Case</span>
             </TabsTrigger>
           </TabsList>
 
@@ -92,6 +98,10 @@ export default function App() {
                 <FormatJSON />
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="csv" className="mt-6">
+            <CSVToJSON />
           </TabsContent>
 
           <TabsContent value="case" className="mt-6">
