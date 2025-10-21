@@ -6,7 +6,14 @@ import { FormatSQL } from './components/FormatSQL';
 import { FormatJSON } from './components/FormatJSON';
 import { CaseConverter } from './components/CaseConverter';
 import CSVToJSON from './components/CSVToJSON';
-import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson } from 'lucide-react';
+import Base64EncoderDecoder from './components/Base64EncoderDecoder';
+import JSONToCSV from './components/JSONToCSV';
+import HashGenerator from './components/HashGenerator';
+import RegexTester from './components/RegexTester';
+import ColorTools from './components/ColorTools';
+import TextDiff from './components/TextDiff';
+import QRCodeGenerator from './components/QRCodeGenerator';
+import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson, FileText, FileSpreadsheet, Shield, Search, Palette, GitCompare, QrCode } from 'lucide-react';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -25,28 +32,63 @@ export default function App() {
           <TabsList className="flex w-full h-auto overflow-x-auto">
             <TabsTrigger value="compare" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <ArrowLeftRight className="w-4 h-4" />
-              <span className="hidden md:inline">Compare Code</span>
-              <span className="md:hidden">Compare</span>
+              <span className="hidden lg:inline">Compare Code</span>
+              <span className="lg:hidden">Compare</span>
             </TabsTrigger>
             <TabsTrigger value="sql" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <Database className="w-4 h-4" />
-              <span className="hidden md:inline">Format SQL</span>
-              <span className="md:hidden">SQL</span>
+              <span className="hidden lg:inline">Format SQL</span>
+              <span className="lg:hidden">SQL</span>
             </TabsTrigger>
             <TabsTrigger value="json" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <Braces className="w-4 h-4" />
-              <span className="hidden md:inline">Format JSON</span>
-              <span className="md:hidden">JSON</span>
+              <span className="hidden lg:inline">Format JSON</span>
+              <span className="lg:hidden">JSON</span>
             </TabsTrigger>
             <TabsTrigger value="csv" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <FileJson className="w-4 h-4" />
-              <span className="hidden md:inline">CSV to JSON</span>
-              <span className="md:hidden">CSV</span>
+              <span className="hidden lg:inline">CSV to JSON</span>
+              <span className="lg:hidden">CSV→JSON</span>
+            </TabsTrigger>
+            <TabsTrigger value="json-csv" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <FileSpreadsheet className="w-4 h-4" />
+              <span className="hidden lg:inline">JSON to CSV</span>
+              <span className="lg:hidden">JSON→CSV</span>
+            </TabsTrigger>
+            <TabsTrigger value="base64" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <FileText className="w-4 h-4" />
+              <span className="hidden lg:inline">Base64</span>
+              <span className="lg:hidden">Base64</span>
+            </TabsTrigger>
+            <TabsTrigger value="hash" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <Shield className="w-4 h-4" />
+              <span className="hidden lg:inline">Hash Generator</span>
+              <span className="lg:hidden">Hash</span>
+            </TabsTrigger>
+            <TabsTrigger value="regex" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <Search className="w-4 h-4" />
+              <span className="hidden lg:inline">Regex Tester</span>
+              <span className="lg:hidden">Regex</span>
+            </TabsTrigger>
+            <TabsTrigger value="color" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <Palette className="w-4 h-4" />
+              <span className="hidden lg:inline">Color Tools</span>
+              <span className="lg:hidden">Color</span>
             </TabsTrigger>
             <TabsTrigger value="case" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
               <CaseSensitive className="w-4 h-4" />
-              <span className="hidden md:inline">Case Converter</span>
-              <span className="md:hidden">Case</span>
+              <span className="hidden lg:inline">Case Converter</span>
+              <span className="lg:hidden">Case</span>
+            </TabsTrigger>
+            <TabsTrigger value="diff" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <GitCompare className="w-4 h-4" />
+              <span className="hidden lg:inline">Text Diff</span>
+              <span className="lg:hidden">Diff</span>
+            </TabsTrigger>
+            <TabsTrigger value="qrcode" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
+              <QrCode className="w-4 h-4" />
+              <span className="hidden lg:inline">QR Code</span>
+              <span className="lg:hidden">QR</span>
             </TabsTrigger>
           </TabsList>
 
@@ -105,6 +147,26 @@ export default function App() {
             <CSVToJSON />
           </TabsContent>
 
+          <TabsContent value="json-csv" className="mt-6">
+            <JSONToCSV />
+          </TabsContent>
+
+          <TabsContent value="base64" className="mt-6">
+            <Base64EncoderDecoder />
+          </TabsContent>
+
+          <TabsContent value="hash" className="mt-6">
+            <HashGenerator />
+          </TabsContent>
+
+          <TabsContent value="regex" className="mt-6">
+            <RegexTester />
+          </TabsContent>
+
+          <TabsContent value="color" className="mt-6">
+            <ColorTools />
+          </TabsContent>
+
           <TabsContent value="case" className="mt-6">
             <Card>
               <CardHeader>
@@ -120,6 +182,14 @@ export default function App() {
                 <CaseConverter />
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="diff" className="mt-6">
+            <TextDiff />
+          </TabsContent>
+
+          <TabsContent value="qrcode" className="mt-6">
+            <QRCodeGenerator />
           </TabsContent>
         </Tabs>
       </div>
