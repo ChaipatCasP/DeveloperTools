@@ -1,6 +1,8 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
+import { Button } from './components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { CompareCode } from './components/CompareCode';
 import { FormatSQL } from './components/FormatSQL';
 import { FormatJSON } from './components/FormatJSON';
@@ -13,185 +15,245 @@ import RegexTester from './components/RegexTester';
 import ColorTools from './components/ColorTools';
 import TextDiff from './components/TextDiff';
 import QRCodeGenerator from './components/QRCodeGenerator';
-import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson, FileText, FileSpreadsheet, Shield, Search, Palette, GitCompare, QrCode } from 'lucide-react';
+import BingoGame from './components/BingoGame';
+import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson, FileText, FileSpreadsheet, Shield, Search, Palette, GitCompare, QrCode, Gamepad2, Grid3X3 } from 'lucide-react';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
+  const [activeSection, setActiveSection] = React.useState<'tools' | 'games'>('tools');
+  const [activeTool, setActiveTool] = React.useState<string>('compare');
+  const [activeGame, setActiveGame] = React.useState<string>('bingo');
+
+  // ข้อมูลเครื่องมือ
+  const tools = [
+    { id: 'compare', name: 'Compare Code', icon: ArrowLeftRight },
+    { id: 'sql', name: 'Format SQL', icon: Database },
+    { id: 'json', name: 'Format JSON', icon: Braces },
+    { id: 'csv', name: 'CSV to JSON', icon: FileJson },
+    { id: 'json-csv', name: 'JSON to CSV', icon: FileSpreadsheet },
+    { id: 'base64', name: 'Base64', icon: FileText },
+    { id: 'hash', name: 'Hash Generator', icon: Shield },
+    { id: 'regex', name: 'Regex Tester', icon: Search },
+    { id: 'color', name: 'Color Tools', icon: Palette },
+    { id: 'case', name: 'Case Converter', icon: CaseSensitive },
+    { id: 'diff', name: 'Text Diff', icon: GitCompare },
+    { id: 'qrcode', name: 'QR Code', icon: QrCode },
+  ];
+
+  // ข้อมูลเกม
+  const games = [
+    { id: 'bingo', name: 'Bingo Game', icon: Grid3X3 },
+  ];
+
+  const getCurrentTool = () => tools.find(tool => tool.id === activeTool);
+  const getCurrentGame = () => games.find(game => game.id === activeGame);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Code2 className="w-10 h-10 text-primary" />
-            <h1 className="text-primary">Developer Tools</h1>
+        {/* Header with Navigation */}
+        <div className="mb-8">
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {activeSection === 'tools' ? (
+                  <>
+                    <Code2 className="w-8 h-8 text-primary" />
+                    <div>
+                      <h1 className="text-xl font-bold text-gray-900">Developer Tools</h1>
+                      <p className="text-sm text-gray-600">เครื่องมือสำหรับนักพัฒนา</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Gamepad2 className="w-8 h-8 text-primary" />
+                    <div>
+                      <h1 className="text-xl font-bold text-gray-900">Games</h1>
+                      <p className="text-sm text-gray-600">เกมส์สนุกๆ สำหรับช่วงพักผ่อน</p>
+                    </div>
+                  </>
+                )}
+              </div>
+              
+              {/* Navigation Menu */}
+              <div className="flex items-center gap-2">
+                {/* Section Selector */}
+                <Button
+                  variant={activeSection === 'tools' ? 'default' : 'outline'}
+                  onClick={() => setActiveSection('tools')}
+                  className="gap-2"
+                  size="sm"
+                >
+                  <Code2 className="w-4 h-4" />
+                  Tools
+                </Button>
+                <Button
+                  variant={activeSection === 'games' ? 'default' : 'outline'}
+                  onClick={() => setActiveSection('games')}
+                  className="gap-2"
+                  size="sm"
+                >
+                  <Gamepad2 className="w-4 h-4" />
+                  Games
+                </Button>
+                
+                {/* Tool/Game Selector */}
+                <Select 
+                  value={activeSection === 'tools' ? activeTool : activeGame}
+                  onValueChange={(value) => {
+                    if (activeSection === 'tools') {
+                      setActiveTool(value);
+                    } else {
+                      setActiveGame(value);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue>
+                      <div className="flex items-center gap-2">
+                        {activeSection === 'tools' ? (
+                          <>
+                            {getCurrentTool()?.icon && React.createElement(getCurrentTool().icon, { className: "w-4 h-4" })}
+                            <span className="hidden sm:inline">{getCurrentTool()?.name}</span>
+                            <span className="sm:hidden">Tool</span>
+                          </>
+                        ) : (
+                          <>
+                            {getCurrentGame()?.icon && React.createElement(getCurrentGame().icon, { className: "w-4 h-4" })}
+                            <span className="hidden sm:inline">{getCurrentGame()?.name}</span>
+                            <span className="sm:hidden">Game</span>
+                          </>
+                        )}
+                      </div>
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent 
+                    className="bg-white border border-gray-200 shadow-lg rounded-md z-50"
+                    style={{ backgroundColor: 'white', opacity: 1 }}
+                  >
+                    {activeSection === 'tools' ? (
+                      tools.map((tool) => (
+                        <SelectItem 
+                          key={tool.id} 
+                          value={tool.id}
+                          className="hover:bg-gray-100 focus:bg-gray-100 bg-white"
+                          style={{ backgroundColor: 'white' }}
+                        >
+                          <div className="flex items-center gap-2">
+                            {React.createElement(tool.icon, { className: "w-4 h-4" })}
+                            {tool.name}
+                          </div>
+                        </SelectItem>
+                      ))
+                    ) : (
+                      games.map((game) => (
+                        <SelectItem 
+                          key={game.id} 
+                          value={game.id}
+                          className="hover:bg-gray-100 focus:bg-gray-100 bg-white"
+                          style={{ backgroundColor: 'white' }}
+                        >
+                          <div className="flex items-center gap-2">
+                            {React.createElement(game.icon, { className: "w-4 h-4" })}
+                            {game.name}
+                          </div>
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
-          <p className="text-muted-foreground">เครื่องมือสำหรับนักพัฒนา - จัดการโค้ดและข้อมูลได้อย่างง่ายดาย</p>
         </div>
 
-        <Tabs defaultValue="compare" className="w-full">
-          <TabsList className="flex w-full h-auto overflow-x-auto">
-            <TabsTrigger value="compare" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <ArrowLeftRight className="w-4 h-4" />
-              <span className="hidden lg:inline">Compare Code</span>
-              <span className="lg:hidden">Compare</span>
-            </TabsTrigger>
-            <TabsTrigger value="sql" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <Database className="w-4 h-4" />
-              <span className="hidden lg:inline">Format SQL</span>
-              <span className="lg:hidden">SQL</span>
-            </TabsTrigger>
-            <TabsTrigger value="json" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <Braces className="w-4 h-4" />
-              <span className="hidden lg:inline">Format JSON</span>
-              <span className="lg:hidden">JSON</span>
-            </TabsTrigger>
-            <TabsTrigger value="csv" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <FileJson className="w-4 h-4" />
-              <span className="hidden lg:inline">CSV to JSON</span>
-              <span className="lg:hidden">CSV→JSON</span>
-            </TabsTrigger>
-            <TabsTrigger value="json-csv" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <FileSpreadsheet className="w-4 h-4" />
-              <span className="hidden lg:inline">JSON to CSV</span>
-              <span className="lg:hidden">JSON→CSV</span>
-            </TabsTrigger>
-            <TabsTrigger value="base64" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <FileText className="w-4 h-4" />
-              <span className="hidden lg:inline">Base64</span>
-              <span className="lg:hidden">Base64</span>
-            </TabsTrigger>
-            <TabsTrigger value="hash" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <Shield className="w-4 h-4" />
-              <span className="hidden lg:inline">Hash Generator</span>
-              <span className="lg:hidden">Hash</span>
-            </TabsTrigger>
-            <TabsTrigger value="regex" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <Search className="w-4 h-4" />
-              <span className="hidden lg:inline">Regex Tester</span>
-              <span className="lg:hidden">Regex</span>
-            </TabsTrigger>
-            <TabsTrigger value="color" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <Palette className="w-4 h-4" />
-              <span className="hidden lg:inline">Color Tools</span>
-              <span className="lg:hidden">Color</span>
-            </TabsTrigger>
-            <TabsTrigger value="case" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <CaseSensitive className="w-4 h-4" />
-              <span className="hidden lg:inline">Case Converter</span>
-              <span className="lg:hidden">Case</span>
-            </TabsTrigger>
-            <TabsTrigger value="diff" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <GitCompare className="w-4 h-4" />
-              <span className="hidden lg:inline">Text Diff</span>
-              <span className="lg:hidden">Diff</span>
-            </TabsTrigger>
-            <TabsTrigger value="qrcode" className="flex-1 gap-2 text-xs sm:text-sm whitespace-nowrap">
-              <QrCode className="w-4 h-4" />
-              <span className="hidden lg:inline">QR Code</span>
-              <span className="lg:hidden">QR</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Content */}
+        {activeSection === 'tools' ? (
+          <div>
+            {activeTool === 'compare' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ArrowLeftRight className="w-5 h-5" />
+                    Compare Code
+                  </CardTitle>
+                  <CardDescription>
+                    เปรียบเทียบโค้ดหรือข้อความสองฝั่ง เพื่อหาความแตกต่างระหว่างบรรทัด
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <CompareCode />
+                </CardContent>
+              </Card>
+            )}
 
-          <TabsContent value="compare" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <ArrowLeftRight className="w-5 h-5" />
-                  Compare Code
-                </CardTitle>
-                <CardDescription>
-                  เปรียบเทียบโค้ดหรือข้อความสองฝั่ง เพื่อหาความแตกต่างระหว่างบรรทัด
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <CompareCode />
-              </CardContent>
-            </Card>
-          </TabsContent>
+            {activeTool === 'sql' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="w-5 h-5" />
+                    Format SQL
+                  </CardTitle>
+                  <CardDescription>
+                    จัดรูปแบบ SQL Query ให้อ่านง่ายและเป็นระเบียบ
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <FormatSQL />
+                </CardContent>
+              </Card>
+            )}
 
-          <TabsContent value="sql" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="w-5 h-5" />
-                  Format SQL
-                </CardTitle>
-                <CardDescription>
-                  จัดรูปแบบ SQL Query ให้อ่านง่ายและเป็นระเบียบ
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormatSQL />
-              </CardContent>
-            </Card>
-          </TabsContent>
+            {activeTool === 'json' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Braces className="w-5 h-5" />
+                    Format JSON
+                  </CardTitle>
+                  <CardDescription>
+                    จัดรูปแบบ JSON ให้สวยงาม หรือย่อให้กระทัดรัด
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <FormatJSON />
+                </CardContent>
+              </Card>
+            )}
 
-          <TabsContent value="json" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Braces className="w-5 h-5" />
-                  Format JSON
-                </CardTitle>
-                <CardDescription>
-                  จัดรูปแบบ JSON ให้สวยงาม หรือย่อให้กระทัดรัด
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormatJSON />
-              </CardContent>
-            </Card>
-          </TabsContent>
+            {activeTool === 'csv' && <CSVToJSON />}
+            {activeTool === 'json-csv' && <JSONToCSV />}
+            {activeTool === 'base64' && <Base64EncoderDecoder />}
+            {activeTool === 'hash' && <HashGenerator />}
+            {activeTool === 'regex' && <RegexTester />}
+            {activeTool === 'color' && <ColorTools />}
+            
+            {activeTool === 'case' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CaseSensitive className="w-5 h-5" />
+                    Text Case Converter
+                  </CardTitle>
+                  <CardDescription>
+                    แปลงข้อความเป็นรูปแบบต่างๆ เช่น UPPER CASE, lower case, camelCase และอื่นๆ
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <CaseConverter />
+                </CardContent>
+              </Card>
+            )}
 
-          <TabsContent value="csv" className="mt-6">
-            <CSVToJSON />
-          </TabsContent>
-
-          <TabsContent value="json-csv" className="mt-6">
-            <JSONToCSV />
-          </TabsContent>
-
-          <TabsContent value="base64" className="mt-6">
-            <Base64EncoderDecoder />
-          </TabsContent>
-
-          <TabsContent value="hash" className="mt-6">
-            <HashGenerator />
-          </TabsContent>
-
-          <TabsContent value="regex" className="mt-6">
-            <RegexTester />
-          </TabsContent>
-
-          <TabsContent value="color" className="mt-6">
-            <ColorTools />
-          </TabsContent>
-
-          <TabsContent value="case" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CaseSensitive className="w-5 h-5" />
-                  Text Case Converter
-                </CardTitle>
-                <CardDescription>
-                  แปลงข้อความเป็นรูปแบบต่างๆ เช่น UPPER CASE, lower case, camelCase และอื่นๆ
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <CaseConverter />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="diff" className="mt-6">
-            <TextDiff />
-          </TabsContent>
-
-          <TabsContent value="qrcode" className="mt-6">
-            <QRCodeGenerator />
-          </TabsContent>
-        </Tabs>
+            {activeTool === 'diff' && <TextDiff />}
+            {activeTool === 'qrcode' && <QRCodeGenerator />}
+          </div>
+        ) : (
+          <div>
+            {activeGame === 'bingo' && <BingoGame />}
+            {/* เพิ่มเกมอื่นๆ ได้ในอนาคต */}
+          </div>
+        )}
       </div>
       
       <Toaster />
