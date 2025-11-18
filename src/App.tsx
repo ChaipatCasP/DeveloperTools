@@ -56,48 +56,50 @@ export default function App() {
         {/* Header with Navigation */}
         <div className="mb-8">
           <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 {activeSection === 'tools' ? (
                   <>
-                    <Code2 className="w-8 h-8 text-primary" />
-                    <div>
-                      <h1 className="text-xl font-bold text-gray-900">Developer Tools</h1>
-                      <p className="text-sm text-gray-600">เครื่องมือสำหรับนักพัฒนา</p>
+                    <Code2 className="w-6 h-6 sm:w-8 sm:h-8 text-primary flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">Developer Tools</h1>
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">เครื่องมือสำหรับนักพัฒนา</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <Gamepad2 className="w-8 h-8 text-primary" />
-                    <div>
-                      <h1 className="text-xl font-bold text-gray-900">Games</h1>
-                      <p className="text-sm text-gray-600">เกมส์สนุกๆ สำหรับช่วงพักผ่อน</p>
+                    <Gamepad2 className="w-6 h-6 sm:w-8 sm:h-8 text-primary flex-shrink-0" />
+                    <div className="min-w-0">
+                      <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">Games</h1>
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">เกมส์สนุกๆ สำหรับช่วงพักผ่อน</p>
                     </div>
                   </>
                 )}
               </div>
               
               {/* Navigation Menu */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                 {/* Section Selector */}
-                <Button
-                  variant={activeSection === 'tools' ? 'default' : 'outline'}
-                  onClick={() => setActiveSection('tools')}
-                  className="gap-2"
-                  size="sm"
-                >
-                  <Code2 className="w-4 h-4" />
-                  Tools
-                </Button>
-                <Button
-                  variant={activeSection === 'games' ? 'default' : 'outline'}
-                  onClick={() => setActiveSection('games')}
-                  className="gap-2"
-                  size="sm"
-                >
-                  <Gamepad2 className="w-4 h-4" />
-                  Games
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant={activeSection === 'tools' ? 'default' : 'outline'}
+                    onClick={() => setActiveSection('tools')}
+                    className="flex-1 sm:flex-none gap-2 text-base h-12 px-4"
+                    size="default"
+                  >
+                    <Code2 className="w-5 h-5" />
+                    <span className="hidden xs:inline font-medium">Tools</span>
+                  </Button>
+                  <Button
+                    variant={activeSection === 'games' ? 'default' : 'outline'}
+                    onClick={() => setActiveSection('games')}
+                    className="flex-1 sm:flex-none gap-2 text-base h-12 px-4"
+                    size="default"
+                  >
+                    <Gamepad2 className="w-5 h-5" />
+                    <span className="hidden xs:inline font-medium">Games</span>
+                  </Button>
+                </div>
                 
                 {/* Tool/Game Selector */}
                 <Select 
@@ -110,40 +112,41 @@ export default function App() {
                     }
                   }}
                 >
-                  <SelectTrigger className="w-[200px]">
+                  <SelectTrigger className="w-full sm:w-[280px] min-w-0 h-12">
                     <SelectValue>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3 min-w-0">
                         {activeSection === 'tools' ? (
                           <>
-                            {getCurrentTool()?.icon && React.createElement(getCurrentTool().icon, { className: "w-4 h-4" })}
-                            <span className="hidden sm:inline">{getCurrentTool()?.name}</span>
-                            <span className="sm:hidden">Tool</span>
+                            {getCurrentTool()?.icon && React.createElement(getCurrentTool()!.icon, { className: "w-5 h-5 flex-shrink-0" })}
+                            <span className="truncate text-base font-medium">{getCurrentTool()?.name || 'เลือกเครื่องมือ'}</span>
                           </>
                         ) : (
                           <>
-                            {getCurrentGame()?.icon && React.createElement(getCurrentGame().icon, { className: "w-4 h-4" })}
-                            <span className="hidden sm:inline">{getCurrentGame()?.name}</span>
-                            <span className="sm:hidden">Game</span>
+                            {getCurrentGame()?.icon && React.createElement(getCurrentGame()!.icon, { className: "w-5 h-5 flex-shrink-0" })}
+                            <span className="truncate text-base font-medium">{getCurrentGame()?.name || 'เลือกเกม'}</span>
                           </>
                         )}
                       </div>
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent 
-                    className="bg-white border border-gray-200 shadow-lg rounded-md z-50"
-                    style={{ backgroundColor: 'white', opacity: 1 }}
+                    className="w-[var(--radix-select-trigger-width)] max-h-[300px] !bg-white border border-gray-200 shadow-xl rounded-md z-[100]"
+                    position="popper"
+                    side="bottom"
+                    align="start"
+                    sideOffset={4}
+                    style={{ backgroundColor: 'white !important' }}
                   >
                     {activeSection === 'tools' ? (
                       tools.map((tool) => (
                         <SelectItem 
                           key={tool.id} 
                           value={tool.id}
-                          className="hover:bg-gray-100 focus:bg-gray-100 bg-white"
-                          style={{ backgroundColor: 'white' }}
+                          className="!bg-white hover:!bg-gray-100 focus:!bg-blue-50 focus:!text-blue-700 data-[highlighted]:!bg-gray-100 cursor-pointer py-4 px-4 text-base border-0"
                         >
-                          <div className="flex items-center gap-2">
-                            {React.createElement(tool.icon, { className: "w-4 h-4" })}
-                            {tool.name}
+                          <div className="flex items-center gap-4 min-w-0">
+                            {React.createElement(tool.icon, { className: "w-5 h-5 flex-shrink-0 text-gray-500" })}
+                            <span className="truncate font-medium">{tool.name}</span>
                           </div>
                         </SelectItem>
                       ))
@@ -152,12 +155,11 @@ export default function App() {
                         <SelectItem 
                           key={game.id} 
                           value={game.id}
-                          className="hover:bg-gray-100 focus:bg-gray-100 bg-white"
-                          style={{ backgroundColor: 'white' }}
+                          className="!bg-white hover:!bg-gray-100 focus:!bg-blue-50 focus:!text-blue-700 data-[highlighted]:!bg-gray-100 cursor-pointer py-4 px-4 text-base border-0"
                         >
-                          <div className="flex items-center gap-2">
-                            {React.createElement(game.icon, { className: "w-4 h-4" })}
-                            {game.name}
+                          <div className="flex items-center gap-4 min-w-0">
+                            {React.createElement(game.icon, { className: "w-5 h-5 flex-shrink-0 text-gray-500" })}
+                            <span className="truncate font-medium">{game.name}</span>
                           </div>
                         </SelectItem>
                       ))
