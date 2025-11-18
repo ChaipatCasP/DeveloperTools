@@ -1,0 +1,8 @@
+name = "developer-tools-bingo"
+compatibility_date = "2023-10-30"
+
+[env.production]
+account_id = ""
+
+[site]
+bucket = "./build"
