@@ -16,7 +16,8 @@ import ColorTools from './components/ColorTools';
 import TextDiff from './components/TextDiff';
 import QRCodeGenerator from './components/QRCodeGenerator';
 import BingoGame from './components/BingoGame';
-import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson, FileText, FileSpreadsheet, Shield, Search, Palette, GitCompare, QrCode, Gamepad2, Grid3X3 } from 'lucide-react';
+import BingoMaster from './components/BingoMaster';
+import { Code2, Database, Braces, CaseSensitive, ArrowLeftRight, FileJson, FileText, FileSpreadsheet, Shield, Search, Palette, GitCompare, QrCode, Gamepad2, Grid3X3, Mic } from 'lucide-react';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
   // ข้อมูลเกม
   const games = [
     { id: 'bingo', name: 'Bingo Game', icon: Grid3X3 },
+    { id: 'bingo-master', name: 'ผู้นำ Bingo', icon: Mic },
   ];
 
   const getCurrentTool = () => tools.find(tool => tool.id === activeTool);
@@ -251,6 +253,7 @@ export default function App() {
         ) : (
           <div>
             {activeGame === 'bingo' && <BingoGame />}
+            {activeGame === 'bingo-master' && <BingoMaster />}
             {/* เพิ่มเกมอื่นๆ ได้ในอนาคต */}
           </div>
         )}
